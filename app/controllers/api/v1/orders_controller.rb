@@ -12,6 +12,7 @@ module Api
         order.process_order
 
         if order.save
+          OrderNotificationJob.perform_later(order.id)
           render json: OrderSerializer.new(order).serializable_hash, status: :created
         else
           render json: { errors: order.errors.full_messages }, status: :unprocessable_entity

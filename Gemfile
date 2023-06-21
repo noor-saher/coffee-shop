@@ -7,6 +7,8 @@ ruby '3.0.5'
 
 gem 'active_model_serializers'
 gem 'devise'
+gem 'sidekiq'
+gem 'redis'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.7'
