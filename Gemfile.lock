@@ -39,6 +39,11 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_model_serializers (0.10.13)
+      actionpack (>= 4.1, < 7.1)
+      activemodel (>= 4.1, < 7.1)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (6.1.7.3)
       activesupport (= 6.1.7.3)
       globalid (>= 0.3.6)
@@ -62,6 +67,7 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.4)
       public_suffix (>= 2.0.2, < 6.0)
+    bcrypt (3.1.18)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -76,9 +82,17 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    case_transform (0.2)
+      activesupport
     concurrent-ruby (1.2.2)
     crass (1.0.6)
     date (3.3.3)
+    devise (4.9.2)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
     erubi (1.12.0)
     ffi (1.15.5)
     globalid (1.1.0)
@@ -88,6 +102,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jsonapi-renderer (0.2.2)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -117,6 +132,7 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.2-x86_64-darwin)
       racc (~> 1.4)
+    orm_adapter (0.5.0)
     public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
@@ -124,8 +140,6 @@ GEM
     rack (2.2.7)
     rack-mini-profiler (2.3.4)
       rack (>= 1.2.0)
-    rack-proxy (0.7.6)
-      rack
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (6.1.7.3)
@@ -160,6 +174,9 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.8.1)
+    responders (3.1.0)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     rexml (3.2.5)
     rubyzip (2.3.2)
     sass-rails (6.0.0)
@@ -176,7 +193,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    semantic_range (3.0.0)
     spring (4.1.1)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
@@ -194,6 +210,8 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    warden (1.2.9)
+      rack (>= 2.0.9)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -203,11 +221,6 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0)
-    webpacker (5.4.4)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -220,9 +233,11 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
+  active_model_serializers
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
+  devise
   jbuilder (~> 2.7)
   listen (~> 3.3)
   puma (~> 5.0)
@@ -236,7 +251,6 @@ DEPENDENCIES
   tzinfo-data
   web-console (>= 4.1.0)
   webdrivers
-  webpacker (~> 5.0)
 
 RUBY VERSION
    ruby 3.0.5p211
