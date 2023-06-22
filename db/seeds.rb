@@ -8,9 +8,7 @@ Product.create(name: 'Croissant', description: 'Sample product 2', price: 20.0, 
 Product.create(name: 'Cappuccino', description: 'Sample product 3', price: 30.0, tax_rate: 0.02)
 Product.create(name: 'Danish Pastry', description: 'Sample product 4', price: 40.0, tax_rate: 0.04)
 
-Discount.create(name: 'Croissant&IcedLatte', description: '20% off on croissant if buying Iced Latte', discount_type: 'percentage',
-                value: 20)
-Discount.create(name: 'FreeDanishPastry', description: 'Get free Danish Pastry on buying Cappuccino', discount_type: 'free', value: 0)
-
-DiscountProduct.create(discount_id: 1, product_id: 2, applicable_product_ids: [1])
-DiscountProduct.create(discount_id: 2, product_id: 4, applicable_product_ids: [3])
+Discount.create(name: 'Croissant&IcedLatte', description: '20% off on croissant if buying Iced Latte', discount_type: :percentage,
+                value: 20, product_id: 2, applicable_product_ids: [1])
+Discount.create(name: 'FreeDanishPastry', description: 'Get free Danish Pastry on buying Cappuccino', discount_type: :free, 
+                value: 0, product_id: 4, applicable_product_ids: [3])

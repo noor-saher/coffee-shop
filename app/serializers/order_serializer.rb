@@ -1,7 +1,16 @@
 # frozen_string_literal: true
 
 class OrderSerializer < ActiveModel::Serializer
-  attributes :id, :total_amount, :status, :products
+  attributes :id, :total_amount, :status, :applied_discounts, :products
+
+  def applied_discounts
+    discounts = {}
+    object.discounts.each do |discount|
+      discounts[discount.id] = discount.name
+    end
+    discounts
+  end
+  
 
   def products
     object.order_products.includes(:product).map do |order_product|

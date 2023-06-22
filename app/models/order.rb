@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 class Order < ApplicationRecord
+  attribute :applicable_product_ids, :integer, array: true, default: []
+
   belongs_to :user
   has_many :order_products, dependent: :destroy
+  has_many :discount_orders, dependent: :destroy
+  has_many :discounts, through: :discount_orders, dependent: :destroy
   validates :user, :total_amount, :status, presence: true
   accepts_nested_attributes_for :order_products
+  enum status: [:pending, :accepted, :completed]
 
   def process_order
     order_products.each(&:set_unit_price)
@@ -20,24 +25,20 @@ class Order < ApplicationRecord
   
   def apply_discounts
     products = order_products.collect(&:product_id)
-    applicable_discount_products = []
-    products.each do |product|
-      discount_product = DiscountProduct.where("applicable_product_ids IS NULL OR applicable_product_ids LIKE ?", "%#{product}%")
-      applicable_discount_products << discount_product if discount_product.present?
-    end
+    applicable_discounts = Discount.where("applicable_product_ids && ARRAY[?]::integer[]", products)
 
-    applicable_discount_products.flatten.each do |discount_product|
-      discount = discount_product.discount
-      
+    applicable_discounts.each do |discount|
       case discount.discount_type
       when 'percentage'
-        if products.include?(discount_product.product_id)
-          order_product = order_products.find { |op| op.product_id == discount_product.product_id }
+        if products.include?(discount.product_id)
+          order_product = order_products.find { |op| op.product_id == discount.product_id }
           discount_amount = order_product.quantity * order_product.unit_price * (discount.value / 100.0)
           order_product.unit_price -= discount_amount
+          self.discount_orders.build(discount: discount)
         end
       when 'free'
-        self.order_products.build(product_id: discount_product.product_id, quantity: 1, unit_price: 0)
+        self.order_products.build(product_id: discount.product_id, quantity: 1, unit_price: 0)
+        self.discount_orders.build(discount: discount)
       end
     end
   end

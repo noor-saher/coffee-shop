@@ -9,11 +9,11 @@ module Api
         products = Product.all
         serialized_products = ActiveModelSerializers::SerializableResource.new(products,
                                                                                each_serializer: ProductSerializer).serializable_hash
-        render json: serialized_products
+        render json: serialized_products, status: :ok
       end
 
       def show
-        render json: ProductSerializer.new(@product).serializable_hash
+        render json: ProductSerializer.new(@product).serializable_hash, status: :ok
       end
 
       private

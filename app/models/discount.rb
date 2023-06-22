@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class Discount < ApplicationRecord
-  has_many :discount_products, dependent: :destroy
-  has_many :products, through: :discount_products, dependent: :destroy
-  validates :name, :discount_type, :value, presence: true
+  belongs_to :product, dependent: :destroy
+  has_many :discount_orders, dependent: :destroy
+  has_many :orders, through: :discount_orders, dependent: :destroy
+  validates :name, :discount_type, :value, :product, presence: true
+  enum discount_type: [:free, :percentage]
 end
